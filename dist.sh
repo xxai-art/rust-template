@@ -15,6 +15,9 @@ DESCRIPTION=$(awk -F ':' 'NR==1 {print $2}' README.md | sed 's/^[ \t]*//;s/[ \t]
 # 在Cargo.toml中查找并替换description字段的内容
 sed -i -E "/\[package\]/,/description/ s~(description\s*=\s*\")[^\"]*~\1$DESCRIPTION~" Cargo.toml
 
+if ! [ -x "$(command -v cargo-v)" ]; then
+  cargo install cargo-v
+fi
 cargo v patch -y
 VERSION=$(grep "^version" Cargo.toml)
 
