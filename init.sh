@@ -24,6 +24,6 @@ git add -u
 git commit -m'init'
 git push origin main
 
-direnv allow
+direnv allow &
 
 rm -rf $0
