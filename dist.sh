@@ -4,7 +4,7 @@ DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
 set -ex
 
-./run.sh >out.txt
+./test.sh >out.txt
 # sed -i -e '2,4d' -e '$d' out.txt
 
 mdi
@@ -18,14 +18,10 @@ sed -i -E "/\[package\]/,/description/ s~(description\s*=\s*\")[^\"]*~\1$DESCRIP
 if ! [ -x "$(command -v cargo-v)" ]; then
   cargo install cargo-v
 fi
-cargo v patch -y
-VERSION=$(grep "^version" Cargo.toml)
-
-# 替换版本号
-sed -i "s/^version = \"$VERSION\"/version = \"$NEW_VERSION\"/" Cargo.toml
-./clippy.sh
 git add -u
-git commit -m "v$VERSION"
+git commit -m "."
+cargo v patch -y
+./clippy.sh
 git pull
 git push
 cargo publish --registry crates-io
